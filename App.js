@@ -36,7 +36,7 @@ import ChangingScreen from './Screens/Screen/ChangingScreen/ChangingScreen';
 import HomeMangeScreen from './Screens/Screen/HomeManageScreen/HomeMangeScreen';
 import AddingScreen from './Screens/Screen/AddingScreen/AddingScreen';
 import ListProductScreen from './Screens/Screen/ListProductScreen/ListProductScreen';
-import Testscreen from './Screens/Screen/testscreen';
+import InputAPIScreen from './Screens/Screen/InputAPIScreen';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -45,6 +45,7 @@ const Stack = createNativeStackNavigator();
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  console.disableYellowBox = true;
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -56,6 +57,7 @@ const App: () => Node = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="InputAPI" component={InputAPIScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="HomeManage" component={HomeMangeScreen} />
         <Stack.Screen name="ListProduct" component={ListProductScreen} />

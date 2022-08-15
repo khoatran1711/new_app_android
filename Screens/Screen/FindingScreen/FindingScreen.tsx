@@ -7,19 +7,17 @@ import color from '../colors';
 import {Touchable, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import styles from '../FindingScreen/style';
+import styles from './style';
 
-import imagebackground from './../../Pictures/background.png';
-import usericon from './../../Pictures/user_icon.png';
-import searchicon from './../../Pictures/search_icon.png';
-import line from './../../Pictures/product_background.png';
-import productbackground from './../../Pictures/product_background.png';
-import testproduct from './../../Pictures/test_product.png';
-import lefticon from './../../Pictures/left_icon.png';
+const imagebackground = require('./../../Pictures/background.png');
+
+const line = require('./../../Pictures/product_background.png');
+const productbackground = require('./../../Pictures/product_background.png');
+const lefticon = require('./../../Pictures/left_icon.png');
 
 const width = Dimensions.get('screen').width;
-const FindingScreen = ({route, navigation}) => {
-  var my_listproduct = route.params;
+const FindingScreen = ({route, navigation}: {route: any; navigation: any}) => {
+  var my_listproduct = route.params as any;
   console.log(my_listproduct.length);
   return (
     <ImageBackground
@@ -52,15 +50,15 @@ const FindingScreen = ({route, navigation}) => {
                       style={styles.forFindingProductImage}></Image>
                     <View style={styles.forFindingProductInfo}>
                       <Text style={styles.forFindingProductName}>
-                        {product.name_product}
+                        {product.nameProduct}
                       </Text>
                       <Text style={styles.forFindingProductPrice}>
-                        $ {product.price_product}
+                        $ {product.priceProduct}
                       </Text>
                       <Text
                         style={styles.forFindingProductDescription}
                         numberOfLines={3}>
-                        {product.description_product}
+                        {product.descriptionProduct}
                       </Text>
                     </View>
                   </ImageBackground>

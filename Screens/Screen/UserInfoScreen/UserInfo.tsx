@@ -14,21 +14,22 @@ import {UsePutUserInfo} from '../../../Data_query/Query.queries';
 
 import styles from './style';
 
-import imagebackground from './../../Pictures/background.png';
-import lefticon from './../../Pictures/left_icon.png';
-import hellobanner from './../../Pictures/hello_banner.png';
+const imagebackground = require('./../../Pictures/background.png');
+const lefticon = require('./../../Pictures/left_icon.png');
+const carticon = require('./../../Pictures/cart.png');
+const hellobanner = require('./../../Pictures/hello_banner.png');
 
 var new_info_user = {
-  user_account: '',
-  user_name: '',
-  user_phone: '',
-  user_mail: '',
+  userAccount: '',
+  userName: '',
+  userPhone: '',
+  userMail: '',
 };
 
-const UserInfo = ({navigation}) => {
+const UserInfo = ({navigation}: {navigation: any}) => {
   const myPutUserInfo = UsePutUserInfo(navigation);
   //test
-  const information = UseGetUserInfo();
+  const information = UseGetUserInfo() as any;
   const [name_text, setName] = useState('');
   const [phone_text, setPhone] = useState('');
   const [mail_text, setMail] = useState('');
@@ -37,22 +38,22 @@ const UserInfo = ({navigation}) => {
   console.log('old', global.oldinformation);
   global.changinguser = new_info_user;
 
-  function ChangeName(new_text) {
+  function ChangeName(new_text: string) {
     setName(new_text);
-    new_info_user.user_name = new_text;
+    new_info_user.userName = new_text;
     global.changinguser = new_info_user;
     console.log('e');
   }
 
-  function ChangePhone(new_text) {
+  function ChangePhone(new_text: string) {
     setPhone(new_text);
-    new_info_user.user_phone = new_text;
+    new_info_user.userPhone = new_text;
     global.changinguser = new_info_user;
   }
 
-  function ChangeMail(new_text) {
+  function ChangeMail(new_text: string) {
     setMail(new_text);
-    new_info_user.user_mail = new_text;
+    new_info_user.userMail = new_text;
     global.changinguser = new_info_user;
   }
 
@@ -67,25 +68,28 @@ const UserInfo = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Image source={lefticon} style={styles.forLeftIcon}></Image>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Image source={carticon} style={styles.forLeftIcon}></Image>
+        </TouchableOpacity>
         <Image source={hellobanner} style={styles.forHelloBanner}></Image>
         <Text style={styles.forWelcomeTitle}>
           {' '}
-          Welcome back, {information.user_name}
+          Welcome back, {information.userName}
         </Text>
         <Text style={styles.forUserInfoTitle}>Your Name</Text>
         <TextInput
           style={styles.forUserInputInfo}
-          defaultValue={information.user_name}
+          defaultValue={information.userName}
           onChangeText={ChangeName}></TextInput>
         <Text style={styles.forUserInfoTitle}>Your Phone</Text>
         <TextInput
           style={styles.forUserInputInfo}
-          defaultValue={information.user_phone}
+          defaultValue={information.userPhone}
           onChangeText={ChangePhone}></TextInput>
         <Text style={styles.forUserInfoTitle}>Your Mail</Text>
         <TextInput
           style={styles.forUserInputInfo}
-          defaultValue={information.user_mail}
+          defaultValue={information.userMail}
           onChangeText={ChangeMail}></TextInput>
         {myPutUserInfo}
       </ScrollView>

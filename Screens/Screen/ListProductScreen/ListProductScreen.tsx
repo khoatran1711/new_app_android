@@ -11,13 +11,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styles from './style';
 
-import imagebackground from './../../Pictures/background.png';
-import usericon from './../../Pictures/user_icon.png';
-import searchicon from './../../Pictures/search_icon.png';
-import line from './../../Pictures/product_background.png';
-import productbackground from './../../Pictures/product_background.png';
-import testproduct from './../../Pictures/test_product.png';
-import lefticon from './../../Pictures/left_icon.png';
+const imagebackground = require('./../../Pictures/background.png');
+const productbackground = require('./../../Pictures/product_background.png');
+const lefticon = require('./../../Pictures/left_icon.png');
 
 const ListProductScreen = ({route, navigation}) => {
   var listProduct = route.params;
@@ -37,9 +33,7 @@ const ListProductScreen = ({route, navigation}) => {
           <View style={styles.forProductArea}>
             {listProduct.length > 0 ? (
               listProduct.map(product => (
-                <View
-                  style={styles.forResultContainer}
-                  key={product.id_product}>
+                <View key={product.idProduct}>
                   <TouchableOpacity
                     onPress={() => navigation.navigate('Changing', product)}>
                     <ImageBackground
@@ -50,15 +44,15 @@ const ListProductScreen = ({route, navigation}) => {
                         style={styles.forFindingProductImage}></Image>
                       <View style={styles.forFindingProductInfo}>
                         <Text style={styles.forFindingProductName}>
-                          {product.name_product}
+                          {product.nameProduct}
                         </Text>
                         <Text style={styles.forFindingProductPrice}>
-                          $ {product.price_product}
+                          $ {product.priceProduct}
                         </Text>
                         <Text
                           style={styles.forFindingProductDescription}
                           numberOfLines={3}>
-                          {product.product_description}
+                          {product.productDescription}
                         </Text>
                       </View>
                     </ImageBackground>

@@ -9,85 +9,63 @@ import {ScrollView} from 'react-native';
 import {Touchable, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, MediaType} from 'react-native-image-picker';
 import styles from './style';
 import color from '../colors';
 import * as ImagePicker from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
 
-import {UsePostProduct} from '../../../Data_query/Query.queries';
+import {UsePutProduct} from '../../../Data_query/Query.queries';
+import {UseGetAProduct} from '../../../Data_query/Query.queries';
+import {UseDeleteProduct} from '../../../Data_query/Query.queries';
 
-import imagebackground from './../../Pictures/background_manage.png';
-import lefticon from './../../Pictures/left_icon.png';
-import test_product from './../../Pictures/test_product.png';
+const imagebackground = require('./../../Pictures/background.png');
+const lefticon = require('./../../Pictures/left_icon.png');
 
-var product = {
-  id_product: '',
-  name_product: '',
-  price_product: 0,
-  description_product: '',
-  category_product: '',
-  imagedata: '',
-};
-
-let options = {
-  title: 'Select Image',
-  customButtons: [
-    {name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
-  ],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
-
-/**
- * The first arg is the options object for customization (it can also be null or omitted for default options),
- * The second arg is the callback which sends object: response (more info in the API Reference)
- */
-
-const AddingScreen = ({navigation}) => {
-  const myPostProduct = UsePostProduct(navigation);
+const ChangingScreen = ({route, navigation}) => {
+  const product_id = route.params.idProduct;
+  const product = UseGetAProduct(product_id) as any;
+  global.changingproduct = product;
+  const old_product = UseGetAProduct(product_id);
   const [image, setImage] = useState(null);
-  const [id_text, setID_text] = useState('');
-  const [name_text, setName_text] = useState('');
-  const [price_text, setPrice_value] = useState(0);
-  const [description_text, setDescription_text] = useState('');
-  const [category_text, setCategory_text] = useState('');
-
-  function ChangeID(new_text) {
-    setID_text(new_text);
-    product.id_product = new_text;
-    global.addingproduct = product;
-  }
+  const [name_text, setName_text] = useState(product.nameProduct);
+  const [price_text, setPrice_value] = useState(product.priceProduct);
+  const [description_text, setDescription_text] = useState(
+    product.descriptionProduct,
+  );
+  const [category_text, setCategory_text] = useState(product.categoryProduct);
 
   function ChangeName(new_text) {
     setName_text(new_text);
-    product.name_product = new_text;
-    global.addingproduct = product;
+    product.nameProduct = new_text;
+    global.changingproduct = product;
   }
 
   function ChangePrice(new_text) {
     var new_value = parseInt(new_text);
     setPrice_value(new_value);
-    product.price_product = new_value;
-    global.adding_product = product;
+    product.priceProduct = new_value;
+    global.changing_product = product;
   }
 
   function ChangeDescription(new_text) {
     setDescription_text(new_text);
-    product.description_product = new_text;
-    global.addingproduct = product;
+    product.descriptionProduct = new_text;
+    global.changingproduct = product;
   }
 
   function ChangeCategory(new_text) {
     setCategory_text(new_text);
-    product.category_product = new_text;
-    global.addingproduct = product;
+    product.descriptionProduct = new_text;
+    global.changingproduct = product;
   }
+
+  const putProduct = UsePutProduct(navigation);
+  const deleteProduct = UseDeleteProduct(navigation);
 
   const launchImageLibrary = () => {
     let options = {
+      mediaType: 'photo' as MediaType,
       storageOptions: {
         skipBackup: true,
         path: 'images',
@@ -95,15 +73,9 @@ const AddingScreen = ({navigation}) => {
     };
     ImagePicker.launchImageLibrary(options, response => {
       console.log('Response = ', response);
-      console.log('response', response.assets[0].uri);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
       } else {
         ImgToBase64.getBase64String(response.assets[0].uri)
           .then(base64String => {
@@ -115,14 +87,10 @@ const AddingScreen = ({navigation}) => {
             global.addingproduct = product;
           })
           .catch(err => console.log(err));
-        console.log('myimageuri', image);
       }
     });
   };
-
-  function showimage() {
-    console.log('myimage', image);
-  }
+  console.log('change this product', product);
 
   return (
     <ImageBackground
@@ -130,50 +98,60 @@ const AddingScreen = ({navigation}) => {
       style={{
         width: '100%',
         height: '100%',
-        paddingTop: Platform.OS === 'android' ? StatusBar.height : 0,
       }}>
       <ScrollView>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('my_old_product', old_product);
+            global.changingproduct = old_product;
+            console.log('my_global', global.changingproduct);
+            navigation.goBack();
+          }}>
           <Image source={lefticon} style={styles.forLeftIcon}></Image>
         </TouchableOpacity>
         <TextInput
-          style={styles.forAddingInput}
-          placeholder="ID"
-          placeholderTextColor={color.yellow}
-          onChangeText={ChangeID}></TextInput>
+          style={styles.forChangingInput}
+          value={product.idProduct}></TextInput>
         <TextInput
-          style={styles.forAddingInput}
+          style={styles.forChangingInput}
           placeholder="Name"
           placeholderTextColor={color.yellow}
+          defaultValue={product.nameProduct}
           onChangeText={ChangeName}></TextInput>
         <TextInput
-          style={styles.forAddingInput}
+          style={styles.forChangingInput}
           placeholder="Price"
           placeholderTextColor={color.yellow}
+          defaultValue={
+            product.priceProduct ? product.priceProduct.toString() : 'Price'
+          }
           onChangeText={ChangePrice}></TextInput>
         <TextInput
-          style={styles.forAddingInput}
+          style={styles.forChangingInput}
           placeholder="Description Description Description Description "
           placeholderTextColor={color.yellow}
+          defaultValue={product.descriptionProduct}
           onChangeText={ChangeDescription}></TextInput>
         <TextInput
-          style={styles.forAddingInput}
+          style={styles.forChangingInput}
           placeholder="Category"
           placeholderTextColor={color.yellow}
+          defaultValue={product.categoryProduct}
           onChangeText={ChangeCategory}></TextInput>
-        <TouchableOpacity
-          style={styles.forButton}
-          title="Upload Photo"
-          onPress={launchImageLibrary}>
+        <TouchableOpacity style={styles.forButton} onPress={launchImageLibrary}>
           <Text style={styles.forTextInOpaTouch}>Upload Image</Text>
         </TouchableOpacity>
-        {image && (
-          <Image source={{uri: image}} style={styles.forChaningImage} />
-        )}
-        {myPostProduct}
+        {
+          <Image
+            source={{uri: image ? image : product.imagedata}}
+            style={styles.forChaningImage}
+          />
+        }
+        {putProduct}
+        {deleteProduct}
       </ScrollView>
     </ImageBackground>
   );
 };
 
-export default AddingScreen;
+export default ChangingScreen;

@@ -12,33 +12,36 @@ import styles from './style';
 //test
 import {UseGetAllProduct} from '../../../Data_query/Query.queries';
 
-import imagebackground from './../../Pictures/background.png';
-import usericon from './../../Pictures/user_icon.png';
-import searchicon from './../../Pictures/search_icon.png';
-import homebanner from './../../Pictures/home_banner.png';
-import newicon from './../../Pictures/new_icon.png';
-import hoticon from './../../Pictures/hot_icon.png';
-import cakeicon from './../../Pictures/cake_icon.png';
-import wineicon from './../../Pictures/wine_icon.png';
-import dishicon from './../../Pictures/dish_icon.png';
-import coffeeicon from './../../Pictures/coffee_icon.png';
-import hottile from './../../Pictures/hot_title.png';
-import productbackground from './../../Pictures/product_background.png';
-import testproduct from './../../Pictures/test_product.png';
+const imagebackground = require('./../../Pictures/background.png');
+const usericon = require('./../../Pictures/user_icon.png');
+const searchicon = require('./../../Pictures/search_icon.png');
+const homebanner = require('./../../Pictures/home_banner.png');
+const newicon = require('./../../Pictures/new_icon.png');
+const hoticon = require('./../../Pictures/hot_icon.png');
+const cakeicon = require('./../../Pictures/cake_icon.png');
+const wineicon = require('./../../Pictures/wine_icon.png');
+const dishicon = require('./../../Pictures/dish_icon.png');
+const coffeeicon = require('./../../Pictures/coffee_icon.png');
+const hottile = require('./../../Pictures/hot_title.png');
+const productbackground = require('./../../Pictures/product_background.png');
 
 const width = Dimensions.get('window').width;
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation}: {navigation: any}) => {
   //test
-  var listProduct = UseGetAllProduct(navigation);
-  var getproduct = listProduct;
+  var listProduct: Array<any>;
+  var listProduct = UseGetAllProduct(navigation) as any[];
+  var getproduct: Array<any>;
+  getproduct = listProduct;
+
   const [finding_text, setFinding_text] = useState('');
 
-  function filter_catgory(category) {
-    var list_filter_product = [];
+  function filter_catgory(category: string) {
+    var list_filter_product: any[] = [];
+    list_filter_product = [];
     if (getproduct.length > 0) {
       for (let i = 0; i < getproduct.length; i++) {
         if (
-          getproduct[i].category_product.toLowerCase() == category.toLowerCase()
+          getproduct[i].categoryProduct.toLowerCase() == category.toLowerCase()
         ) {
           var add_product = getproduct[i];
           list_filter_product.push(add_product);
@@ -50,12 +53,12 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate('Finding', list_filter_product);
   }
 
-  function filter(text) {
+  function filter(text: string) {
     var list_filter_product = [];
     if (getproduct.length > 0) {
       for (let i = 0; i < getproduct.length; i++) {
         if (
-          getproduct[i].name_product.toLowerCase().includes(text.toLowerCase())
+          getproduct[i].nameProduct.toLowerCase().includes(text.toLowerCase())
         ) {
           var add_product = getproduct[i];
           list_filter_product.push(add_product);
@@ -134,7 +137,7 @@ const HomeScreen = ({navigation}) => {
             {listProduct.length > 0 ? (
               listProduct.map(product => (
                 <TouchableOpacity
-                  key={product.id_product}
+                  key={product.idProduct}
                   onPress={() => navigation.navigate('Product', product)}>
                   <ImageBackground
                     source={productbackground}
@@ -144,15 +147,15 @@ const HomeScreen = ({navigation}) => {
                       style={styles.forHotProductImage}></Image>
                     <View style={styles.forHotProductInfo}>
                       <Text style={styles.forHotProductName}>
-                        {product.name_product}
+                        {product.nameProduct}
                       </Text>
                       <Text style={styles.forHotProductPrice}>
-                        $ {product.price_product}
+                        $ {product.priceProduct}
                       </Text>
                       <Text
                         style={styles.forHotProductDescription}
                         numberOfLines={3}>
-                        {product.description_product}
+                        {product.descriptionProduct}
                       </Text>
                     </View>
                   </ImageBackground>

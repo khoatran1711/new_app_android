@@ -8,30 +8,32 @@ import styles from './style';
 //test
 import {UseGetUser} from '../../../Data_query/Query.queries';
 import {NavigationContainer} from '@react-navigation/native';
-import imagebackground from './../../Pictures/background.png';
-import title from './../../Pictures/title.png';
-import logo from './../../Pictures/logo.png';
-import account from './../../Pictures/account.png';
-import password from './../../Pictures/password.png';
+
+const imagebackground = require('./../../Pictures/background.png');
+const title = require('./../../Pictures/title.png');
+const logo = require('./../../Pictures/logo.png');
+const account = require('./../../Pictures/account.png');
+const password = require('./../../Pictures/password.png');
 
 var account_value = '';
 var password_value = '';
 
 //console.log(myHookValue);
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation}: {navigation: any}) => {
+  console.log('myAPI', global.myAPI);
   global.navigationScreen = navigation;
   //test
   const withMyHook = UseGetUser();
   const [account_text, setAccount] = useState('');
   const [password_text, setPassword] = useState('');
 
-  function account_change(new_text) {
+  function account_change(new_text: string) {
     setAccount(new_text);
-    account_value = new_text;
+    account_value = account_text;
     global.account = new_text;
   }
-  function password_change(new_text) {
+  function password_change(new_text: string) {
     setPassword(new_text);
     password_value = password_text;
     global.password = new_text;

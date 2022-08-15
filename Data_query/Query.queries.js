@@ -16,19 +16,21 @@ const width = Dimensions.get('screen').width;
 //const ip = await Network.getIpAddressAsync();
 
 //const my_API = `http://${manifest.debuggerHost.split(":").shift()}:7116/`;
-const my_API = 'https://firstbrasshen89.conveyor.cloud/';
+const my_API = global.myAPI
+  ? global.myAPI
+  : 'https://differentbrushedboard26.conveyor.cloud/';
 
 export const UseGetUser = () => {
   const [data, setData] = useState([]);
 
   async function Login(account) {
-    //console.log(my_API + 'useraccount/' + account);
+    console.log(my_API + 'useraccount/' + account);
     if (account) {
       return await axios
         .get(my_API + 'useraccount/' + account)
         .then(response => {
           setData(response.data);
-          var password = response.data.user_password;
+          var password = response.data.password;
           console.log(password);
           if (password == global.password) {
             if (account == 'admin') {
@@ -96,6 +98,7 @@ export const UseGetAllProduct = navigation => {
 };
 
 export const UseGetAProduct = id_product => {
+  console.log('ID', id_product);
   const [data, setData] = useState([]);
   var url_key = my_API + 'product/' + id_product;
   console.log(url_key);
@@ -115,7 +118,7 @@ export const UsePutProduct = navigation => {
     //console.log(product);
     var sent_product = product;
     return axios
-      .put(my_API + 'product/' + product.id_product, sent_product)
+      .put(my_API + 'product/' + product.idProduct, sent_product)
       .then(response => {
         setUpdate(response.data.updatedAt);
         console.log(response);
@@ -160,7 +163,7 @@ export const UseDeleteProduct = navigation => {
     //console.log(product.id_product);
     var sent_product = product;
     return axios
-      .delete(my_API + 'product/' + product.id_product)
+      .delete(my_API + 'product/' + product.idProduct)
       .then(response => {
         setUpdate(response.data.updatedAt);
         console.log(response);
@@ -183,14 +186,14 @@ export const UsePostUser = navigation => {
   function Add_User(user_info) {
     //console.log(user_info);
     var sent_account = {
-      user_account: user_info.user_account,
-      user_password: user_info.user_password,
+      Account: user_info.account,
+      Password: user_info.password,
     };
     var sent_user_info = {
-      user_account: user_info.user_account,
-      user_name: user_info.user_account,
-      user_phone: user_info.user_phone,
-      user_mail: user_info.user_mail,
+      userAccount: user_info.userAccount,
+      userName: user_info.userAccount,
+      userPhone: user_info.userPhone,
+      userMail: user_info.userMail,
     };
 
     //console.log("account", sent_account);
@@ -227,23 +230,23 @@ export const UsePutUserInfo = navigation => {
   const [update, setUpdate] = useState(null);
   function ChangeInfo(user) {
     var sent_userinfo = user;
-    if (!sent_userinfo.user_account || sent_userinfo.user_account == '') {
-      sent_userinfo.user_account = global.oldinformation.user_account;
+    if (!sent_userinfo.useAccount || sent_userinfo.userAccount == '') {
+      sent_userinfo.userAccount = global.oldinformation.userAccount;
     }
-    if (!sent_userinfo.user_name || sent_userinfo.user_name == '') {
-      sent_userinfo.user_name = global.oldinformation.user_name;
+    if (!sent_userinfo.userName || sent_userinfo.userName == '') {
+      sent_userinfo.userName = global.oldinformation.userName;
     }
-    if (!sent_userinfo.user_phone || sent_userinfo.user_phone == '') {
-      sent_userinfo.user_phone = global.oldinformation.user_phone;
+    if (!sent_userinfo.userPhone || sent_userinfo.userPhone == '') {
+      sent_userinfo.userPhone = global.oldinformation.userPhone;
     }
     if (!sent_userinfo.user_mail || sent_userinfo.user_mail == '') {
-      sent_userinfo.user_mail = global.oldinformation.user_mail;
+      sent_userinfo.userMail = global.oldinformation.userMail;
     }
-    console.log(my_API + 'user/' + sent_userinfo.user_account);
+    console.log(my_API + 'user/' + sent_userinfo.userAccount);
     //console.log(sent_userinfo);
     //var sent_product = product;
     axios
-      .put(my_API + 'user/' + sent_userinfo.user_account, sent_userinfo)
+      .put(my_API + 'user/' + sent_userinfo.userAccount, sent_userinfo)
       .then(response => {
         setUpdate(response.data.updatedAt);
         navigation.goBack();

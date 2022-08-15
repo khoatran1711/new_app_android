@@ -11,13 +11,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {UsePostUser} from '../../../Data_query/Query.queries';
 
-import imagebackground from './../../Pictures/background.png';
-import title from './../../Pictures/title_signup.png';
-import logo from './../../Pictures/logo_signup.png';
-import account from './../../Pictures/account.png';
-import password from './../../Pictures/password.png';
-import email from './../../Pictures/email.png';
-import phone from './../../Pictures/phone-call.png';
+const imagebackground = require('./../../Pictures/background.png');
+const title = require('./../../Pictures/title_signup.png');
+const logo = require('./../../Pictures/logo_signup.png');
+const account = require('./../../Pictures/account.png');
+const password = require('./../../Pictures/password.png');
+const email = require('./../../Pictures/email.png');
+const phone = require('./../../Pictures/phone-call.png');
 
 var user_info_register = {
   user_account: '',
@@ -26,32 +26,32 @@ var user_info_register = {
   user_phone: '',
 };
 
-const SignupScreen = ({navigation}) => {
+const SignupScreen = ({navigation}: {navigation: any}) => {
   const myPostUser = UsePostUser(navigation);
   const [account_text, setAccount] = useState('');
   const [password_text, setPassword] = useState('');
   const [mail_text, setMail] = useState('');
   const [phone_text, setPhone] = useState('');
 
-  function ChangeAccount(new_text) {
+  function ChangeAccount(new_text: string) {
     setAccount(new_text);
     user_info_register.user_account = new_text;
     global.regis_user = user_info_register;
   }
 
-  function ChangePassword(new_text) {
+  function ChangePassword(new_text: string) {
     setAccount(new_text);
     user_info_register.user_password = new_text;
     global.regis_user = user_info_register;
   }
 
-  function ChangeMail(new_text) {
+  function ChangeMail(new_text: string) {
     setAccount(new_text);
     user_info_register.user_mail = new_text;
     global.regis_user = user_info_register;
   }
 
-  function ChangePhone(new_text) {
+  function ChangePhone(new_text: string) {
     setAccount(new_text);
     user_info_register.user_phone = new_text;
     global.regis_user = user_info_register;
@@ -63,7 +63,6 @@ const SignupScreen = ({navigation}) => {
       style={{
         width: '100%',
         height: '100%',
-        paddingTop: Platform.OS === 'android' ? StatusBar.height : 0,
       }}>
       <View
         style={{

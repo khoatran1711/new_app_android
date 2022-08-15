@@ -21,9 +21,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
   },
-  forFindingProductContainer: {
-    flexDirection: 'row',
-  },
   forInputProduct: {
     fontSize: (width * 5) / 100,
     marginTop: (width * 10) / 100,
@@ -61,6 +58,7 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
     flexDirection: 'row',
   },
+  forResultContainer: {},
   forFindingProductImage: {
     top: '4%',
     marginLeft: '5%',

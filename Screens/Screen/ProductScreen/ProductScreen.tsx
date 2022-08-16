@@ -9,6 +9,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styles from './style';
 
+import {UsePostProductToCart} from '../../../Data_query/Query.queries';
+
 const imagebackground = require('./../../Pictures/background.png');
 const lefticon = require('./../../Pictures/left_icon.png');
 
@@ -16,6 +18,10 @@ const width = Dimensions.get('screen').width;
 
 const ProductScreen = ({route, navigation}: {route: any; navigation: any}) => {
   var product = route.params;
+  const usePostProductToCart = UsePostProductToCart(
+    product.idProduct,
+    product.priceProduct,
+  );
   console.log(product);
   return (
     <ImageBackground
@@ -40,6 +46,7 @@ const ProductScreen = ({route, navigation}: {route: any; navigation: any}) => {
           {' '}
           {product.descriptionProduct}{' '}
         </Text>
+        {usePostProductToCart}
       </ScrollView>
     </ImageBackground>
   );

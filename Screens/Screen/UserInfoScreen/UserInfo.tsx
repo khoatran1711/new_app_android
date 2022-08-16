@@ -65,12 +65,15 @@ const UserInfo = ({navigation}: {navigation: any}) => {
         height: '100%',
       }}>
       <ScrollView>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Image source={lefticon} style={styles.forLeftIcon}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Image source={carticon} style={styles.forLeftIcon}></Image>
-        </TouchableOpacity>
+        <View style={styles.forIcons}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Image source={lefticon} style={styles.forLeftIcon}></Image>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('CartScreen')}>
+            <Image source={carticon} style={styles.forCartIcon}></Image>
+          </TouchableOpacity>
+        </View>
+
         <Image source={hellobanner} style={styles.forHelloBanner}></Image>
         <Text style={styles.forWelcomeTitle}>
           {' '}

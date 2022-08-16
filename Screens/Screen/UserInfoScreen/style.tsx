@@ -3,11 +3,22 @@ import {StyleSheet} from 'react-native';
 import color from '../colors';
 const width = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
+  forIcons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   forLeftIcon: {
     marginLeft: (width * 3) / 100,
     marginTop: (width * 3) / 100,
     width: (width * 7) / 100,
     height: (width * 7) / 100,
+    resizeMode: 'stretch',
+  },
+  forCartIcon: {
+    marginRight: (width * 3) / 100,
+    marginTop: (width * 3) / 100,
+    width: (width * 9) / 100,
+    height: (width * 9) / 100,
     resizeMode: 'stretch',
   },
   forHelloBanner: {

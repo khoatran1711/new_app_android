@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, Alert} from 'react-native';
 import {useEffect} from 'react';
 import {Dimensions, ToastAndroid} from 'react-native';
+
+import minus from '../Screens/Pictures/minus.png';
+import add from '../Screens/Pictures/add.png';
 
 import color from '../Screens/Screen/colors';
 import axios from 'axios';
@@ -10,6 +13,8 @@ import chaningstyles from '../Screens/Screen/ChangingScreen/style';
 import addingstyles from '../Screens/Screen/AddingScreen/style';
 import signupstyles from '../Screens/Screen/SignupScreen/style';
 import userinfostyles from '../Screens/Screen/UserInfoScreen/style';
+import productstyles from '../Screens/Screen/ProductScreen/style';
+import cartstyles from '../Screens/Screen/CartScreen/Cart/style';
 
 const width = Dimensions.get('screen').width;
 
@@ -70,7 +75,6 @@ export const UseGetUserInfo = () => {
   useEffect(() => {
     axios.get(url_key).then(response => setData(response.data));
   }, []);
-  var return_data = [];
   if (data.length > 0) {
     console.log('len>0', data);
   }
@@ -92,8 +96,6 @@ export const UseGetAllProduct = navigation => {
     return willFocusSubscription;
   }, []);
 
-  var return_data = [];
-
   return data;
 };
 
@@ -105,7 +107,6 @@ export const UseGetAProduct = id_product => {
   useEffect(async () => {
     await axios.get(url_key).then(response => setData(response.data));
   }, []);
-  var return_data = [];
   if (data.length > 0) {
     console.log('len>0', data);
   }
@@ -277,9 +278,137 @@ export const UseGetAllMydata = () => {
   useEffect(async () => {
     await axios.get(url_key).then(response => setData(response.data));
   }, []);
-  var return_data = [];
   if (data.length > 0) {
     <Text>{data.length}</Text>;
   }
   return data;
+};
+
+export const UsePostProductToCart = (idProduct, priceProduct) => {
+  const [update, setUpdate] = useState(null);
+  function Add_Product_to_Cart() {
+    var sent_cart = {
+      cartID: global.account + idProduct,
+      userID: global.account,
+      productID: idProduct,
+      productPrice: priceProduct,
+      productAmount: 1,
+      totalAmount: priceProduct,
+    };
+
+    axios.post(my_API + 'cart/', sent_cart).then(response => {
+      setUpdate(response.data.updatedAt);
+      console.log(response);
+    });
+  }
+
+  return (
+    <TouchableOpacity
+      style={productstyles.forBuyButton}
+      onPress={() => Add_Product_to_Cart()}>
+      <Text style={productstyles.forTextInButton}>Add to Cart</Text>
+    </TouchableOpacity>
+  );
+};
+
+export const UseGetCartByUser = idUser => {
+  const [data, setData] = useState([]);
+  var url_key = my_API + 'cart/getbyuser/' + idUser;
+  console.log(url_key);
+  function fetchData() {
+    return axios.get(url_key).then(response => setData(response.data));
+  }
+  useEffect(() => {
+    fetchData();
+    const willFocusSubscription = global.navigationScreen.addListener(
+      'focus',
+      () => {
+        fetchData();
+      },
+    );
+    return willFocusSubscription;
+  }, []);
+
+  return data;
+};
+
+export const UsePutProductToCart = (cart, amount) => {
+  const [update, setUpdate] = useState(null);
+  function Change_Product_to_Cart() {
+    //console.log(amount);
+    var sent_cart = cart;
+    sent_cart.productAmount = amount;
+    sent_cart.totalAmount = amount * sent_cart.productPrice;
+
+    function Change() {
+      axios
+        .put(my_API + 'cart/' + sent_cart.cartID, sent_cart)
+        .then(response => {
+          setUpdate(response.data.updatedAt);
+          console.log(response);
+          ToastAndroid.show('Updated successfully!', ToastAndroid.SHORT);
+        });
+    }
+
+    const ConfirmAlert = () => {
+      Alert.alert(
+        'Update your cart?',
+        'Your products in your cart will be updated?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => Change()},
+        ],
+      );
+    };
+    ConfirmAlert();
+  }
+
+  return (
+    <TouchableOpacity
+      style={cartstyles.forButton}
+      onPress={() => Change_Product_to_Cart()}>
+      <Text style={cartstyles.forTextinButton}>Confirm</Text>
+    </TouchableOpacity>
+  );
+};
+
+export const UseDeleteCart = idCart => {
+  const [update, setUpdate] = useState(null);
+  function Delete() {
+    function Delete_product() {
+      axios.delete(my_API + 'cart/' + idCart).then(response => {
+        setUpdate(response.data.updatedAt);
+        console.log(response);
+        ToastAndroid.show('Delete successfully!', ToastAndroid.SHORT);
+        global.navigationScreen.goBack();
+      });
+    }
+
+    const ConfirmAlert = () => {
+      Alert.alert(
+        'Delete this product?',
+        'This product will be moved out of your cart?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => Delete_product()},
+        ],
+      );
+    };
+
+    ConfirmAlert();
+  }
+
+  return (
+    <TouchableOpacity style={cartstyles.forButton} onPress={() => Delete()}>
+      <Text style={cartstyles.forTextinButton}>Delete</Text>
+    </TouchableOpacity>
+  );
 };

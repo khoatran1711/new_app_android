@@ -36,7 +36,9 @@ import ChangingScreen from './Screens/Screen/ChangingScreen/ChangingScreen';
 import HomeMangeScreen from './Screens/Screen/HomeManageScreen/HomeMangeScreen';
 import AddingScreen from './Screens/Screen/AddingScreen/AddingScreen';
 import ListProductScreen from './Screens/Screen/ListProductScreen/ListProductScreen';
+import CartScreen from './Screens/Screen/CartScreen/CartScreen';
 import InputAPIScreen from './Screens/Screen/InputAPIScreen';
+import TestWebView from './Screens/Screen/TestWebView';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -57,11 +59,12 @@ const App: () => Node = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="TestWebView" component={TestWebView} />
         <Stack.Screen name="InputAPI" component={InputAPIScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="HomeManage" component={HomeMangeScreen} />
         <Stack.Screen name="ListProduct" component={ListProductScreen} />
-
+        <Stack.Screen name="CartScreen" component={CartScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="UserInfo" component={UserInfo} />
